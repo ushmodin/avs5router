@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified"
+           attributeFormDefault="qualified">
+
+
+    <xs:simpleType name="IDType">
+        <xs:restriction base="xs:string">
+            <xs:maxLength value="36"/>
+            <xs:minLength value="1"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="NameType">
+        <xs:restriction base="xs:string">
+            <xs:maxLength value="100"/>
+            <xs:minLength value="1"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="OkatoType">
+        <xs:restriction base="xs:string">
+            <xs:length value="11"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="InnType">
+        <xs:restriction base="xs:string">
+            <xs:maxLength value="12"/>
+            <xs:minLength value="10"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="SimpleStringType">
+        <xs:restriction base="xs:string">
+            <xs:maxLength value="100"/>
+            <xs:minLength value="0"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+    <xs:complexType name="AbstractResponse">
+        <xs:sequence>
+            <xs:element name="Error" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="code" type="xs:string" minOccurs="1"/>
+                        <xs:element name="message" type="xs:string" minOccurs="1"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="UidType">
+        <xs:restriction base="xs:string">
+            <xs:length value="36"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="RouteKey">
+        <xs:sequence>
+            <xs:element name="dispatchStationUid" type="UidType"/>
+            <xs:element name="arrivalStationUid" type="UidType"/>
+            <xs:element name="dispatchTime" type="xs:time"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Agent">
+        <xs:sequence>
+            <xs:element name="name" type="NameType" minOccurs="0"/>
+            <xs:element name="inn" type="InnType" minOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:element name="SetStationInfoRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="stationId" type="IDType" minOccurs="1"/>
+                <xs:element name="uid" type="UidType" minOccurs="1"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="SetStationInfoResponse">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:restriction base="AbstractResponse"/>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="TransitBookRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="routeKey" type="RouteKey"/>
+                <xs:element name="dispatchStationUid" type="UidType"/>
+                <xs:element name="arrivalStationUid" type="UidType"/>
+                <xs:element name="date" type="xs:date"/>
+                <xs:element name="seatsCount" type="xs:int"/>
+                <xs:element name="Agent" type="Agent" minOccurs="1"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="TransitTicket">
+        <xs:sequence>
+            <xs:element name="ticketId" type="IDType" minOccurs="1"/>
+            <xs:element name="seatNum" type="xs:int" minOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="TransitBookResponse">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="AbstractResponse">
+                    <xs:sequence>
+                        <xs:element name="Body">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="TransitTicket" type="TransitTicket" minOccurs="1" maxOccurs="unbounded"/>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="TransitConfirmRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="routeKey" type="RouteKey" minOccurs="1" maxOccurs="1"/>
+                <xs:element name="ticketId" type="IDType" minOccurs="1" maxOccurs="unbounded"/>
+                <xs:element name="Agent" type="Agent" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="TransitConfirmResponse">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:restriction base="AbstractResponse"/>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="TransitCancelRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="routeKey" type="RouteKey" minOccurs="1" maxOccurs="1"/>
+                <xs:element name="ticketId" type="IDType" minOccurs="1" maxOccurs="unbounded"/>
+                <xs:element name="Agent" type="Agent" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="TransitCancelResponse">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:restriction base="AbstractResponse"/>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+</xs:schema>

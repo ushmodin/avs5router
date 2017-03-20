@@ -1,0 +1,17 @@
+package com.artmark.avs5router.domain;
+
+import com.artmark.avs5router.domain.model.Host;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
+
+/**
+ * Created by nikolay on 20.03.17.
+ */
+@Repository
+public interface HostRepository extends JpaRepository<Host, Long> {
+	@Query("select d.host from Depot d where d.globalStation.guid = ?1")
+	Optional<Host> getHostByDepotUid(String uid);
+}
