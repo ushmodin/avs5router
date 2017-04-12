@@ -28,4 +28,9 @@ public class TransitRouter {
 	public TransitCancelResponse cancel(@RequestBody TransitCancelRequest request) {
 		return transitService.cancel(request);
 	}
+
+	@RequestMapping("/transit/getFreeSeats")
+	public GetFreeSeatsResponse getFreeSeats(@RequestBody GetFreeSeatsRequest request) {
+		return transitService.getFreeSeats(request);
+	}
 }

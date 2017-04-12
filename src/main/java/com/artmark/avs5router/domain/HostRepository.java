@@ -1,6 +1,7 @@
 package com.artmark.avs5router.domain;
 
 import com.artmark.avs5router.domain.model.Host;
+import com.artmark.avs5router.domain.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
