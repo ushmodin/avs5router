@@ -3,56 +3,93 @@ package com.artmark.avs5router;
 import com.artmark.avs5router.domain.HostRepository;
 import com.artmark.avs5router.domain.model.Host;
 import com.artmark.avs5router.model.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.http.client.support.BasicAuthorizationInterceptor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.DefaultUriTemplateHandler;
+import org.springframework.web.client.RestClientException;
+
+import java.io.IOException;
+import java.net.ConnectException;
+import java.net.SocketTimeoutException;
+import java.util.function.Supplier;
 
 /**
  * Created by nikolay on 20.03.17.
  */
 @Service
 public class TransitService {
-	@Autowired
-	private HostRepository hostRepository;
+	private final HostRepository hostRepository;
+	private final RestTemplateRepository restTemplateRepository;
+	private final static Logger log = LoggerFactory.getLogger(TransitService.class);
 
-	private RestTemplate getRestTemplate(Host host) {
-		RestTemplate restTemplate = new RestTemplate(new HttpComponentsClientHttpRequestFactory());
-		restTemplate.getInterceptors().add(new BasicAuthorizationInterceptor(host.getUsername(), host.getPassword()));
-        DefaultUriTemplateHandler uriTemplateHandler = new DefaultUriTemplateHandler();
-        if ("avs5".equalsIgnoreCase(host.getEngine())) {
-            uriTemplateHandler.setBaseUrl(host.getUrl() + "/soap/rs");
-        } else if ("avs5rs".equalsIgnoreCase(host.getEngine())) {
-            uriTemplateHandler.setBaseUrl(host.getUrl());
-        }
-        restTemplate.setUriTemplateHandler(uriTemplateHandler);
-		return restTemplate;
+	public TransitService(HostRepository hostRepository, RestTemplateRepository restTemplateRepository) {
+		this.hostRepository = hostRepository;
+		this.restTemplateRepository = restTemplateRepository;
 	}
 
-	private Host getHost(RouteKey routeKey) {
-		return hostRepository.getHostByDepotUid(routeKey.getDispatchStationUid())
-				.orElseThrow(()->new TransitException("Мастер-сервер не найден"));
-	}
 
 	public TransitBookResponse book(TransitBookRequest request) {
-		Host host = getHost(request.getRouteKey());
-		return getRestTemplate(host).postForObject("/transit/book", request, TransitBookResponse.class);
+		Host host = getHost(request.getRouteKey().getDispatchStationUid());
+		return post(host, "/transit/book", request, TransitBookResponse.class);
 	}
 
 	public TransitConfirmResponse confirm(TransitConfirmRequest request) {
-		Host host = getHost(request.getRouteKey());
-		return getRestTemplate(host).postForObject("/transit/confirm", request, TransitConfirmResponse.class);
+		Host host = getHost(request.getRouteKey().getDispatchStationUid());
+		return post(host, "/transit/confirm", request, TransitConfirmResponse.class);
 	}
 
 	public TransitCancelResponse cancel(TransitCancelRequest request) {
-		Host host = getHost(request.getRouteKey());
-		return getRestTemplate(host).postForObject("/transit/cancel", request, TransitCancelResponse.class);
+		Host host = getHost(request.getRouteKey().getDispatchStationUid());
+		return post(host, "/transit/cancel", request, TransitCancelResponse.class);
 	}
 
 	public GetFreeSeatsResponse getFreeSeats(GetFreeSeatsRequest request) {
-		Host host = getHost(request.getRouteKey());
-		return getRestTemplate(host).postForObject("/transit/getFreeSeats", request, GetFreeSeatsResponse.class);
+		Host host = getHost(request.getRouteKey().getDispatchStationUid());
+		return post(host, "/transit/getFreeSeats", request, GetFreeSeatsResponse.class);
+	}
+
+	private Host getHost(String dispatchStationUid) {
+		return hostRepository.getHostByDepotUid(dispatchStationUid)
+				.orElseThrow(()->new TransitException("Мастер-сервер не найден"));
+	}
+
+	private <T extends AbstractResponse> T post(Host host, String uri, Object request, Class<T> responseClass) {
+		try {
+			return restTemplateRepository.getRestTemplate(host).postForObject(uri, request, responseClass);
+		} catch (RestClientException e) {
+			Throwable cause = e.getCause();
+			if (cause instanceof ConnectException) {
+				T response = BeanUtils.instantiate(responseClass);
+				AbstractResponse.Error error = new AbstractResponse.Error();
+				error.setCode("IO_ERROR");
+				error.setMessage("Не удалось подключиться к мастер-серверу автовокзала.");
+				response.setError(error);
+				return response;
+			} else if (cause instanceof SocketTimeoutException) {
+				T response = BeanUtils.instantiate(responseClass);
+				AbstractResponse.Error error = new AbstractResponse.Error();
+				error.setCode("IO_ERROR");
+				error.setMessage("Мастер-сервер автовокзала не ответил вовремя.");
+				response.setError(error);
+				return response;
+			} else if (cause instanceof IOException) {
+				T response = BeanUtils.instantiate(responseClass);
+				AbstractResponse.Error error = new AbstractResponse.Error();
+				error.setCode("IO_ERROR");
+				error.setMessage("Не известная сетевая ошибка.");
+				response.setError(error);
+				return response;
+			}
+			throw e;
+		} catch (HttpMessageNotReadableException e) {
+			T response = BeanUtils.instantiate(responseClass);
+			AbstractResponse.Error error = new AbstractResponse.Error();
+			error.setCode("CONTENT_ERROR");
+			error.setMessage("Не удалось разобрать ответ от мастер-сервера.");
+			response.setError(error);
+			return response;
+		}
 	}
 }

@@ -3,13 +3,14 @@ package com.artmark.avs5router.domain.model;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 
 /**
  * Created by nikolay on 20.03.17.
  */
 @Entity
 @Table(name = "hosts")
-public class Host implements Identity {
+public class Host implements Identity, Serializable {
 	@Id
 	private Long id;
 	private String name;
@@ -65,5 +66,21 @@ public class Host implements Identity {
 
 	public void setUrl(String url) {
 		this.url = url;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Host host = (Host) o;
+
+		return id.equals(host.id);
+
+	}
+
+	@Override
+	public int hashCode() {
+		return id.hashCode();
 	}
 }
