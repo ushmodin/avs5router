@@ -33,7 +33,6 @@ public class RestTemplateRepository {
         } else if ("avs5rs".equalsIgnoreCase(host.getEngine())) {
             uriTemplateHandler.setBaseUrl(host.getUrl());
         }
-        uriTemplateHandler.setBaseUrl("http://localhost:8088");
         restTemplate.setUriTemplateHandler(uriTemplateHandler);
         return restTemplate;
     }
