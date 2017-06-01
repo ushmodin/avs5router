@@ -31,27 +31,33 @@ public class TransitService {
 
 
 	public TransitBookResponse book(TransitBookRequest request) {
-		Host host = getHost(request.getRouteKey().getDispatchStationUid());
+		Host host = getHost(request.getRouteKey());
 		return post(host, "/transit/book", request, TransitBookResponse.class);
 	}
 
 	public TransitConfirmResponse confirm(TransitConfirmRequest request) {
-		Host host = getHost(request.getRouteKey().getDispatchStationUid());
+		Host host = getHost(request.getRouteKey());
 		return post(host, "/transit/confirm", request, TransitConfirmResponse.class);
 	}
 
 	public TransitCancelResponse cancel(TransitCancelRequest request) {
-		Host host = getHost(request.getRouteKey().getDispatchStationUid());
+		Host host = getHost(request.getRouteKey());
 		return post(host, "/transit/cancel", request, TransitCancelResponse.class);
 	}
 
 	public GetFreeSeatsResponse getFreeSeats(GetFreeSeatsRequest request) {
-		Host host = getHost(request.getRouteKey().getDispatchStationUid());
+		Host host = getHost(request.getRouteKey());
 		return post(host, "/transit/getFreeSeats", request, GetFreeSeatsResponse.class);
 	}
 
-	private Host getHost(String dispatchStationUid) {
-		return hostRepository.getHostByDepotUid(dispatchStationUid)
+	private Host getHost(RouteKey routeKey) {
+		if ("1468886CD54D47A2869928363EB37A14".equals(routeKey.getDispatchStationUid())
+			&& "932a8a0d-19c0-4582-a5a0-687df4a2870d".equals(routeKey.getArrivalStationUid())
+			&& routeKey.getDispatchTime().getHour() == 15
+			&& routeKey.getDispatchTime().getMinute() == 0) {
+			return hostRepository.getOne(5226291L);
+		}
+		return hostRepository.getHostByDepotUid(routeKey.getDispatchStationUid())
 				.orElseThrow(()->new TransitException("Мастер-сервер не найден"));
 	}
 
