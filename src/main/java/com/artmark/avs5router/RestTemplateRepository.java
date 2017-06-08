@@ -2,7 +2,9 @@ package com.artmark.avs5router;
 
 import com.artmark.avs5router.domain.model.Host;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.http.client.support.BasicAuthorizationInterceptor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -27,6 +29,7 @@ public class RestTemplateRepository {
         RestTemplate restTemplate = new RestTemplate(requestFactory);
         restTemplate.getInterceptors().add(new BasicAuthorizationInterceptor(host.getUsername(), host.getPassword()));
         restTemplate.getInterceptors().add(new RequestLoggerInterceptor());
+        restTemplate.setRequestFactory(new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory()));
         DefaultUriTemplateHandler uriTemplateHandler = new DefaultUriTemplateHandler();
         if ("avs5".equalsIgnoreCase(host.getEngine())) {
             uriTemplateHandler.setBaseUrl(host.getUrl() + "/soap/rs");

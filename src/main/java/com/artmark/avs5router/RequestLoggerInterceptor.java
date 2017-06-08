@@ -7,7 +7,9 @@ import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 /**
  * @author Ushmodin N.
@@ -24,7 +26,7 @@ public class RequestLoggerInterceptor implements ClientHttpRequestInterceptor {
         }
         ClientHttpResponse response = execution.execute(httpRequest, bytes);
         if (log.isTraceEnabled()) {
-            traceResponse(response, bytes);
+            traceResponse(response);
         }
         return response;
     }
@@ -34,9 +36,18 @@ public class RequestLoggerInterceptor implements ClientHttpRequestInterceptor {
                 + " Request body: " + new String(body, "UTF-8"));
     }
 
-    private void traceResponse(ClientHttpResponse response, byte[] body) throws IOException {
+    private void traceResponse(ClientHttpResponse response) throws IOException {
+        StringBuilder buffer = new StringBuilder();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(response.getBody(), "UTF-8"));
+        String line = reader.readLine();
+        while (line != null) {
+            buffer.append(line);
+            buffer.append('\n');
+            line = reader.readLine();
+        }
+        response.getBody().reset();
         log.trace("Status code: " + response.getStatusCode()
-                + " Response body: " + new String(body, "UTF-8"));
+                + " Response body: " + buffer.toString());
     }
 
 }
