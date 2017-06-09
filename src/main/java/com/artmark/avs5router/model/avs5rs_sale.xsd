@@ -709,6 +709,7 @@
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="RouteKey" type="RouteKey"/>
+                <xs:element name="ticketId" type="IDType" minOccurs="1" maxOccurs="unbounded"/>
                 <xs:element name="Ticket" maxOccurs="unbounded" minOccurs="1">
                     <xs:complexType>
                         <xs:sequence>
