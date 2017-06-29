@@ -715,6 +715,7 @@
                         <xs:sequence>
                             <xs:element name="ticketId" type="IDType" minOccurs="1" maxOccurs="1"/>
                             <xs:element name="Passenger" type="Passenger" minOccurs="0"/>
+                            <xs:element name="price" type="xs:decimal" minOccurs="1" maxOccurs="1"/>
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>

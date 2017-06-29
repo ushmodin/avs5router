@@ -1,6 +1,7 @@
 
 package com.artmark.avs5router.model;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -29,6 +30,7 @@ import javax.xml.bind.annotation.XmlType;
  *                 &lt;sequence>
  *                   &lt;element name="ticketId" type="{}IDType"/>
  *                   &lt;element name="Passenger" type="{}Passenger" minOccurs="0"/>
+ *                   &lt;element name="price" type="{http://www.w3.org/2001/XMLSchema}decimal"/>
  *                 &lt;/sequence>
  *               &lt;/restriction>
  *             &lt;/complexContent>
@@ -181,6 +183,7 @@ public class TransitConfirmRequest {
      *       &lt;sequence>
      *         &lt;element name="ticketId" type="{}IDType"/>
      *         &lt;element name="Passenger" type="{}Passenger" minOccurs="0"/>
+     *         &lt;element name="price" type="{http://www.w3.org/2001/XMLSchema}decimal"/>
      *       &lt;/sequence>
      *     &lt;/restriction>
      *   &lt;/complexContent>
@@ -192,7 +195,8 @@ public class TransitConfirmRequest {
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "", propOrder = {
         "ticketId",
-        "passenger"
+        "passenger",
+        "price"
     })
     public static class Ticket {
 
@@ -200,6 +204,8 @@ public class TransitConfirmRequest {
         protected String ticketId;
         @XmlElement(name = "Passenger")
         protected Passenger passenger;
+        @XmlElement(required = true)
+        protected BigDecimal price;
 
         /**
          * Gets the value of the ticketId property.
@@ -247,6 +253,30 @@ public class TransitConfirmRequest {
          */
         public void setPassenger(Passenger value) {
             this.passenger = value;
+        }
+
+        /**
+         * Gets the value of the price property.
+         * 
+         * @return
+         *     possible object is
+         *     {@link BigDecimal }
+         *     
+         */
+        public BigDecimal getPrice() {
+            return price;
+        }
+
+        /**
+         * Sets the value of the price property.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link BigDecimal }
+         *     
+         */
+        public void setPrice(BigDecimal value) {
+            this.price = value;
         }
 
     }
