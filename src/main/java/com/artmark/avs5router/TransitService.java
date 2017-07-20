@@ -63,6 +63,12 @@ public class TransitService {
 			&& routeKey.getDispatchTime().getMinute() == 30) {
 			return hostRepository.getOne(5226291L);
 		}
+		if ("29fe850c-9c37-45b4-95c3-42220600e09a".equals(routeKey.getDispatchStationUid())
+				&& "36B109DE7B8B4218B1F13CCBE32BE4CC".equals(routeKey.getArrivalStationUid())
+				&& routeKey.getDispatchTime().getHour() == 10
+				&& routeKey.getDispatchTime().getMinute() == 0) {
+			return hostRepository.getOne(7318722L);
+		}
 
 		return hostRepository.getHostByDepotUid(routeKey.getDispatchStationUid())
 				.orElseThrow(()->new TransitException("Мастер-сервер не найден"));
