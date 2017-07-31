@@ -55,6 +55,7 @@ import javax.xml.bind.annotation.XmlType;
     TransitConfirmResponse.class,
     TransitBookResponse.class,
     GetTripStopsResponse.class,
+    TransitTripInfoResponse.class,
     UpdateTicketResponse.class,
     SearchTripsResponse.class,
     GetArrivalStationsResponse.class,

@@ -78,6 +78,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link TransitTripInfoResponse }
+     * 
+     */
+    public TransitTripInfoResponse createTransitTripInfoResponse() {
+        return new TransitTripInfoResponse();
+    }
+
+    /**
      * Create an instance of {@link GetTripStopsResponse }
      * 
      */
@@ -155,6 +163,14 @@ public class ObjectFactory {
      */
     public ReturnTicketResponse createReturnTicketResponse() {
         return new ReturnTicketResponse();
+    }
+
+    /**
+     * Create an instance of {@link TransitBookResponse.Body }
+     * 
+     */
+    public TransitBookResponse.Body createTransitBookResponseBody() {
+        return new TransitBookResponse.Body();
     }
 
     /**
@@ -294,6 +310,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link TransitTripInfoResponse.Body }
+     * 
+     */
+    public TransitTripInfoResponse.Body createTransitTripInfoResponseBody() {
+        return new TransitTripInfoResponse.Body();
+    }
+
+    /**
      * Create an instance of {@link GetTripStopsResponse.Body }
      * 
      */
@@ -307,14 +331,6 @@ public class ObjectFactory {
      */
     public GetOrderRequest createGetOrderRequest() {
         return new GetOrderRequest();
-    }
-
-    /**
-     * Create an instance of {@link TransitBookResponse.Body }
-     * 
-     */
-    public TransitBookResponse.Body createTransitBookResponseBody() {
-        return new TransitBookResponse.Body();
     }
 
     /**
@@ -422,6 +438,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link TransitTripInfoRequest }
+     * 
+     */
+    public TransitTripInfoRequest createTransitTripInfoRequest() {
+        return new TransitTripInfoRequest();
+    }
+
+    /**
      * Create an instance of {@link GetTicketTypesRequest }
      * 
      */
@@ -510,11 +534,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link TransitTicket }
+     * Create an instance of {@link CarrierType }
      * 
      */
-    public TransitTicket createTransitTicket() {
-        return new TransitTicket();
+    public CarrierType createCarrierType() {
+        return new CarrierType();
+    }
+
+    /**
+     * Create an instance of {@link com.artmark.avs5router.model.TransitTicket }
+     * 
+     */
+    public com.artmark.avs5router.model.TransitTicket createTransitTicket() {
+        return new com.artmark.avs5router.model.TransitTicket();
     }
 
     /**
@@ -555,6 +587,14 @@ public class ObjectFactory {
      */
     public Station createStation() {
         return new Station();
+    }
+
+    /**
+     * Create an instance of {@link TransitBookResponse.Body.TransitTicket }
+     * 
+     */
+    public TransitBookResponse.Body.TransitTicket createTransitBookResponseBodyTransitTicket() {
+        return new TransitBookResponse.Body.TransitTicket();
     }
 
 }

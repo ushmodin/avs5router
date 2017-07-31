@@ -111,4 +111,9 @@ public class TransitService {
 			return response;
 		}
 	}
+
+	public TransitTripInfoResponse getTripInfo(TransitTripInfoRequest request) {
+		Host host = getHost(request.getRouteKey());
+		return post(host, "/transit/getTripInfo", request, TransitTripInfoResponse.class);
+	}
 }

@@ -30,6 +30,8 @@ import javax.xml.bind.annotation.XmlType;
  *                 &lt;sequence>
  *                   &lt;element name="ticketId" type="{}IDType"/>
  *                   &lt;element name="Passenger" type="{}Passenger" minOccurs="0"/>
+ *                   &lt;element name="ticketSeries" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="ticketNumber" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *                   &lt;element name="price" type="{http://www.w3.org/2001/XMLSchema}decimal"/>
  *                 &lt;/sequence>
  *               &lt;/restriction>
@@ -183,6 +185,8 @@ public class TransitConfirmRequest {
      *       &lt;sequence>
      *         &lt;element name="ticketId" type="{}IDType"/>
      *         &lt;element name="Passenger" type="{}Passenger" minOccurs="0"/>
+     *         &lt;element name="ticketSeries" type="{http://www.w3.org/2001/XMLSchema}string"/>
+     *         &lt;element name="ticketNumber" type="{http://www.w3.org/2001/XMLSchema}string"/>
      *         &lt;element name="price" type="{http://www.w3.org/2001/XMLSchema}decimal"/>
      *       &lt;/sequence>
      *     &lt;/restriction>
@@ -196,6 +200,8 @@ public class TransitConfirmRequest {
     @XmlType(name = "", propOrder = {
         "ticketId",
         "passenger",
+        "ticketSeries",
+        "ticketNumber",
         "price"
     })
     public static class Ticket {
@@ -204,6 +210,10 @@ public class TransitConfirmRequest {
         protected String ticketId;
         @XmlElement(name = "Passenger")
         protected Passenger passenger;
+        @XmlElement(required = true)
+        protected String ticketSeries;
+        @XmlElement(required = true)
+        protected String ticketNumber;
         @XmlElement(required = true)
         protected BigDecimal price;
 
@@ -253,6 +263,54 @@ public class TransitConfirmRequest {
          */
         public void setPassenger(Passenger value) {
             this.passenger = value;
+        }
+
+        /**
+         * Gets the value of the ticketSeries property.
+         * 
+         * @return
+         *     possible object is
+         *     {@link String }
+         *     
+         */
+        public String getTicketSeries() {
+            return ticketSeries;
+        }
+
+        /**
+         * Sets the value of the ticketSeries property.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link String }
+         *     
+         */
+        public void setTicketSeries(String value) {
+            this.ticketSeries = value;
+        }
+
+        /**
+         * Gets the value of the ticketNumber property.
+         * 
+         * @return
+         *     possible object is
+         *     {@link String }
+         *     
+         */
+        public String getTicketNumber() {
+            return ticketNumber;
+        }
+
+        /**
+         * Sets the value of the ticketNumber property.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link String }
+         *     
+         */
+        public void setTicketNumber(String value) {
+            this.ticketNumber = value;
         }
 
         /**

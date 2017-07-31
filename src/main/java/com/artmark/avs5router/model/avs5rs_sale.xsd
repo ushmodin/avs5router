@@ -680,13 +680,6 @@
         </xs:complexType>
     </xs:element>
 
-    <xs:complexType name="TransitTicket">
-        <xs:sequence>
-            <xs:element name="ticketId" type="IDType" minOccurs="1"/>
-            <xs:element name="seatNum" type="xs:int" minOccurs="1"/>
-        </xs:sequence>
-    </xs:complexType>
-
     <xs:element name="TransitBookResponse">
         <xs:complexType>
             <xs:complexContent>
@@ -695,7 +688,14 @@
                         <xs:element name="Body">
                             <xs:complexType>
                                 <xs:sequence>
-                                    <xs:element name="TransitTicket" type="TransitTicket" minOccurs="1" maxOccurs="unbounded"/>
+                                    <xs:element name="TransitTicket" minOccurs="1" maxOccurs="unbounded">
+                                        <xs:complexType>
+                                            <xs:sequence>
+                                                <xs:element name="ticketId" type="IDType" minOccurs="1"/>
+                                                <xs:element name="seatNum" type="xs:int" minOccurs="1"/>
+                                            </xs:sequence>
+                                        </xs:complexType>
+                                    </xs:element>
                                 </xs:sequence>
                             </xs:complexType>
                         </xs:element>
@@ -715,6 +715,8 @@
                         <xs:sequence>
                             <xs:element name="ticketId" type="IDType" minOccurs="1" maxOccurs="1"/>
                             <xs:element name="Passenger" type="Passenger" minOccurs="0"/>
+                            <xs:element name="ticketSeries" type="xs:string" minOccurs="1" maxOccurs="1"/>
+                            <xs:element name="ticketNumber" type="xs:string" minOccurs="1" maxOccurs="1"/>
                             <xs:element name="price" type="xs:decimal" minOccurs="1" maxOccurs="1"/>
                         </xs:sequence>
                     </xs:complexType>
@@ -746,6 +748,63 @@
         <xs:complexType>
             <xs:complexContent>
                 <xs:restriction base="AbstractResponse"/>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+
+    <xs:complexType name="CarrierType">
+        <xs:sequence>
+            <xs:element name="name" type="SimpleStringType" minOccurs="0"/>
+            <xs:element name="inn" type="InnType" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="TransitTripInfoRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="RouteKey" type="RouteKey"/>
+                <xs:element name="date" type="xs:date"/>
+                <xs:element name="dispatchStationUid" type="UidType" minOccurs="0"/>
+                <xs:element name="arrivalStationUid" type="UidType" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="TransitTicket">
+        <xs:sequence>
+            <xs:element name="dispatchStationUid" type="UidType"/>
+            <xs:element name="dispatchStationName" type="SimpleStringType"/>
+            <xs:element name="arrivalStationUid" type="UidType"/>
+            <xs:element name="arrivalStationName" type="SimpleStringType"/>
+            <xs:element name="Passenger" type="Passenger"/>
+            <xs:element name="ticketId" type="IDType" minOccurs="1"/>
+            <xs:element name="ticketSeries" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="ticketNumber" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="seatNum" type="xs:int" minOccurs="1"/>
+            <xs:element name="Agent" type="Agent"/>
+            <xs:element name="price" type="xs:decimal"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:element name="TransitTripInfoResponse">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="AbstractResponse">
+                    <xs:sequence>
+                        <xs:element name="Body">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="Ticket" type="TransitTicket" maxOccurs="unbounded"/>
+                                    <xs:element name="maxSeats" type="xs:int"/>
+                                    <xs:element name="freeSeats" type="xs:int"/>
+                                    <xs:element name="Carrier" type="CarrierType" minOccurs="0"/>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:extension>
             </xs:complexContent>
         </xs:complexType>
     </xs:element>
