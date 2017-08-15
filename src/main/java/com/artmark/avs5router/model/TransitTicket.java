@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="arrivalStationName" type="{}SimpleStringType"/>
  *         &lt;element name="Passenger" type="{}Passenger"/>
  *         &lt;element name="ticketId" type="{}IDType"/>
- *         &lt;element name="ticketSeries" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="ticketSeries" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="ticketNumber" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="seatNum" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *         &lt;element name="Agent" type="{}Agent"/>
@@ -65,7 +65,6 @@ public class TransitTicket {
     protected Passenger passenger;
     @XmlElement(required = true)
     protected String ticketId;
-    @XmlElement(required = true)
     protected String ticketSeries;
     @XmlElement(required = true)
     protected String ticketNumber;

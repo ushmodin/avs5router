@@ -1,6 +1,7 @@
 
 package com.artmark.avs5router.model;
 
+import java.math.BigInteger;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -19,9 +20,10 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
+ *         &lt;element name="order" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *         &lt;element name="stationName" type="{}SimpleStringType"/>
  *         &lt;element name="stationUid" type="{}UidType"/>
- *         &lt;element name="distance" type="{http://www.w3.org/2001/XMLSchema}int"/>
+ *         &lt;element name="distance" type="{http://www.w3.org/2001/XMLSchema}integer"/>
  *         &lt;element name="arrivalTime" type="{http://www.w3.org/2001/XMLSchema}time"/>
  *         &lt;element name="dispatchTime" type="{http://www.w3.org/2001/XMLSchema}time"/>
  *       &lt;/sequence>
@@ -34,6 +36,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "RouteItem", propOrder = {
+    "order",
     "stationName",
     "stationUid",
     "distance",
@@ -42,17 +45,35 @@ import javax.xml.datatype.XMLGregorianCalendar;
 })
 public class RouteItem {
 
+    protected int order;
     @XmlElement(required = true)
     protected String stationName;
     @XmlElement(required = true)
     protected String stationUid;
-    protected int distance;
+    @XmlElement(required = true)
+    protected BigInteger distance;
     @XmlElement(required = true)
     @XmlSchemaType(name = "time")
     protected XMLGregorianCalendar arrivalTime;
     @XmlElement(required = true)
     @XmlSchemaType(name = "time")
     protected XMLGregorianCalendar dispatchTime;
+
+    /**
+     * Gets the value of the order property.
+     * 
+     */
+    public int getOrder() {
+        return order;
+    }
+
+    /**
+     * Sets the value of the order property.
+     * 
+     */
+    public void setOrder(int value) {
+        this.order = value;
+    }
 
     /**
      * Gets the value of the stationName property.
@@ -105,16 +126,24 @@ public class RouteItem {
     /**
      * Gets the value of the distance property.
      * 
+     * @return
+     *     possible object is
+     *     {@link BigInteger }
+     *     
      */
-    public int getDistance() {
+    public BigInteger getDistance() {
         return distance;
     }
 
     /**
      * Sets the value of the distance property.
      * 
+     * @param value
+     *     allowed object is
+     *     {@link BigInteger }
+     *     
      */
-    public void setDistance(int value) {
+    public void setDistance(BigInteger value) {
         this.distance = value;
     }
 
