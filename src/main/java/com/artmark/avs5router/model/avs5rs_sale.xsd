@@ -788,7 +788,7 @@
             <xs:element name="arrivalStationName" type="SimpleStringType"/>
             <xs:element name="Passenger" type="Passenger"/>
             <xs:element name="ticketId" type="IDType" minOccurs="1"/>
-            <xs:element name="ticketSeries" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="ticketSeries" type="xs:string" minOccurs="0" maxOccurs="1"/>
             <xs:element name="ticketNumber" type="xs:string" minOccurs="1" maxOccurs="1"/>
             <xs:element name="seatNum" type="xs:int" minOccurs="1"/>
             <xs:element name="Agent" type="Agent"/>
@@ -828,9 +828,10 @@
 
     <xs:complexType name="RouteItem">
         <xs:sequence>
+            <xs:element name="order" type="xs:int"/>
             <xs:element name="stationName" type="SimpleStringType"/>
             <xs:element name="stationUid" type="UidType"/>
-            <xs:element name="distance" type="xs:int"/>
+            <xs:element name="distance" type="xs:integer"/>
             <xs:element name="arrivalTime" type="xs:time"/>
             <xs:element name="dispatchTime" type="xs:time"/>
         </xs:sequence>
