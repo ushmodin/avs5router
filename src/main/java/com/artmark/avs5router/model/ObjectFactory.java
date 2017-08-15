@@ -158,6 +158,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link TransitRouteInfoResponse }
+     * 
+     */
+    public TransitRouteInfoResponse createTransitRouteInfoResponse() {
+        return new TransitRouteInfoResponse();
+    }
+
+    /**
      * Create an instance of {@link ReturnTicketResponse }
      * 
      */
@@ -254,6 +262,22 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link TransitRouteInfoRequest }
+     * 
+     */
+    public TransitRouteInfoRequest createTransitRouteInfoRequest() {
+        return new TransitRouteInfoRequest();
+    }
+
+    /**
+     * Create an instance of {@link RouteKey }
+     * 
+     */
+    public RouteKey createRouteKey() {
+        return new RouteKey();
+    }
+
+    /**
      * Create an instance of {@link EchoRequest }
      * 
      */
@@ -275,14 +299,6 @@ public class ObjectFactory {
      */
     public TransitCancelRequest createTransitCancelRequest() {
         return new TransitCancelRequest();
-    }
-
-    /**
-     * Create an instance of {@link RouteKey }
-     * 
-     */
-    public RouteKey createRouteKey() {
-        return new RouteKey();
     }
 
     /**
@@ -486,6 +502,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link TransitRouteInfoResponse.Body }
+     * 
+     */
+    public TransitRouteInfoResponse.Body createTransitRouteInfoResponseBody() {
+        return new TransitRouteInfoResponse.Body();
+    }
+
+    /**
      * Create an instance of {@link SetStationInfoResponse }
      * 
      */
@@ -587,6 +611,14 @@ public class ObjectFactory {
      */
     public Station createStation() {
         return new Station();
+    }
+
+    /**
+     * Create an instance of {@link RouteItem }
+     * 
+     */
+    public RouteItem createRouteItem() {
+        return new RouteItem();
     }
 
     /**

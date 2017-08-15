@@ -705,6 +705,14 @@
         </xs:complexType>
     </xs:element>
 
+    <xs:simpleType name="RelationType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="OWN"/>
+            <xs:enumeration value="AGENT"/>
+            <xs:enumeration value="ATP"/>
+        </xs:restriction>
+    </xs:simpleType>
+
     <xs:element name="TransitConfirmRequest">
         <xs:complexType>
             <xs:sequence>
@@ -718,6 +726,7 @@
                             <xs:element name="ticketSeries" type="xs:string" minOccurs="1" maxOccurs="1"/>
                             <xs:element name="ticketNumber" type="xs:string" minOccurs="1" maxOccurs="1"/>
                             <xs:element name="price" type="xs:decimal" minOccurs="1" maxOccurs="1"/>
+                            <xs:element name="relation" type="RelationType" minOccurs="0" maxOccurs="1"/>
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>
@@ -808,5 +817,43 @@
             </xs:complexContent>
         </xs:complexType>
     </xs:element>
+
+    <xs:element name="TransitRouteInfoRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="RouteKey" type="RouteKey"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="RouteItem">
+        <xs:sequence>
+            <xs:element name="stationName" type="SimpleStringType"/>
+            <xs:element name="stationUid" type="UidType"/>
+            <xs:element name="distance" type="xs:int"/>
+            <xs:element name="arrivalTime" type="xs:time"/>
+            <xs:element name="dispatchTime" type="xs:time"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="TransitRouteInfoResponse">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="AbstractResponse">
+                    <xs:sequence>
+                        <xs:element name="Body">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="name" type="SimpleStringType"/>
+                                    <xs:element name="RouteItem" type="RouteItem" maxOccurs="unbounded"/>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
 
 </xs:schema>

@@ -47,6 +47,11 @@ public class TransitController {
 		return handleErrors(()->transitService.getTripInfo(request), TransitTripInfoResponse.class);
 	}
 
+	@RequestMapping("/transit/getRouteInfo")
+	public TransitRouteInfoResponse getRouteInfo(@RequestBody TransitRouteInfoRequest request) {
+		return handleErrors(()->transitService.getRouteInfo(request), TransitRouteInfoResponse.class);
+	}
+
 	public <T extends AbstractResponse> T handleErrors(Supplier<T> action, Class<T> responseClass) {
 		try {
 			return action.get();

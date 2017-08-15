@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 
 
@@ -33,6 +34,7 @@ import javax.xml.bind.annotation.XmlType;
  *                   &lt;element name="ticketSeries" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *                   &lt;element name="ticketNumber" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *                   &lt;element name="price" type="{http://www.w3.org/2001/XMLSchema}decimal"/>
+ *                   &lt;element name="relation" type="{}RelationType" minOccurs="0"/>
  *                 &lt;/sequence>
  *               &lt;/restriction>
  *             &lt;/complexContent>
@@ -188,6 +190,7 @@ public class TransitConfirmRequest {
      *         &lt;element name="ticketSeries" type="{http://www.w3.org/2001/XMLSchema}string"/>
      *         &lt;element name="ticketNumber" type="{http://www.w3.org/2001/XMLSchema}string"/>
      *         &lt;element name="price" type="{http://www.w3.org/2001/XMLSchema}decimal"/>
+     *         &lt;element name="relation" type="{}RelationType" minOccurs="0"/>
      *       &lt;/sequence>
      *     &lt;/restriction>
      *   &lt;/complexContent>
@@ -202,7 +205,8 @@ public class TransitConfirmRequest {
         "passenger",
         "ticketSeries",
         "ticketNumber",
-        "price"
+        "price",
+        "relation"
     })
     public static class Ticket {
 
@@ -216,6 +220,8 @@ public class TransitConfirmRequest {
         protected String ticketNumber;
         @XmlElement(required = true)
         protected BigDecimal price;
+        @XmlSchemaType(name = "string")
+        protected RelationType relation;
 
         /**
          * Gets the value of the ticketId property.
@@ -335,6 +341,30 @@ public class TransitConfirmRequest {
          */
         public void setPrice(BigDecimal value) {
             this.price = value;
+        }
+
+        /**
+         * Gets the value of the relation property.
+         * 
+         * @return
+         *     possible object is
+         *     {@link RelationType }
+         *     
+         */
+        public RelationType getRelation() {
+            return relation;
+        }
+
+        /**
+         * Sets the value of the relation property.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link RelationType }
+         *     
+         */
+        public void setRelation(RelationType value) {
+            this.relation = value;
         }
 
     }

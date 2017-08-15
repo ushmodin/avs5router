@@ -45,6 +45,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlSeeAlso({
     ReturnTicketResponse.class,
     SetStationInfoResponse.class,
+    TransitRouteInfoResponse.class,
     GetFreeSeatsResponse.class,
     GetOrderResponse.class,
     CancelTicketResponse.class,
