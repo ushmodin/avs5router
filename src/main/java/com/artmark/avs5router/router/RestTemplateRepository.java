@@ -1,4 +1,4 @@
-package com.artmark.avs5router;
+package com.artmark.avs5router.router;
 
 import com.artmark.avs5router.domain.model.Host;
 import org.springframework.cache.annotation.Cacheable;

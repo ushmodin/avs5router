@@ -1,4 +1,4 @@
-package com.artmark.avs5router;
+package com.artmark.avs5router.router;
 
 /**
  * Created by nikolay on 20.03.17.

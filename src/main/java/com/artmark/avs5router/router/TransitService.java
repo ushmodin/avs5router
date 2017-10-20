@@ -1,4 +1,4 @@
-package com.artmark.avs5router;
+package com.artmark.avs5router.router;
 
 import com.artmark.avs5router.domain.HostRepository;
 import com.artmark.avs5router.domain.model.Host;
@@ -13,7 +13,6 @@ import org.springframework.web.client.RestClientException;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
-import java.util.function.Supplier;
 
 /**
  * Created by nikolay on 20.03.17.

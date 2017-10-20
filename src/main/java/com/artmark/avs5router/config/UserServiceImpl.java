@@ -1,4 +1,4 @@
-package com.artmark.avs5router;
+package com.artmark.avs5router.config;
 
 import com.artmark.avs5router.domain.UserRepository;
 import com.artmark.avs5router.domain.model.User;
