@@ -4,10 +4,13 @@ import com.artmark.avs5router.avdriver.model.Agent;
 import com.artmark.avs5router.avdriver.model.*;
 import com.artmark.avs5router.avdriver.model.Passenger;
 import com.artmark.avs5router.avdriver.model.RouteKey;
-import com.artmark.avs5router.model.*;
-import com.artmark.avs5router.router.TransitService;
+import com.artmark.avs5router.dispatcher.DispatcherService;
+import com.artmark.avs5router.domain.GlobalStationRepository;
+import com.artmark.avs5router.sale.model.*;
+import com.artmark.avs5router.sale.TransitService;
 import com.artmark.avs5router.util.Dates;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -23,6 +26,10 @@ public class AvDriverService {
 
 	@Autowired
 	private TransitService transitService;
+	@Autowired
+	private DispatcherService dispatcherService;
+	@Autowired
+	private GlobalStationRepository globalStationRepository;
 
 	public TripInfoResponse tripInfo(TripInfoRequest request) {
 		TransitTripInfoResponse.Body tripInfoBody = getTripInfo(request);
@@ -75,8 +82,8 @@ public class AvDriverService {
 		return routeInfo.getBody();
 	}
 
-	private com.artmark.avs5router.model.RouteKey createRouteKey(RouteKey routeKey) {
-		com.artmark.avs5router.model.RouteKey result = new com.artmark.avs5router.model.RouteKey();
+	private com.artmark.avs5router.sale.model.RouteKey createRouteKey(RouteKey routeKey) {
+		com.artmark.avs5router.sale.model.RouteKey result = new com.artmark.avs5router.sale.model.RouteKey();
 		result.setArrivalStationUid(routeKey.arrivalStationUid);
 		result.setDispatchStationUid(routeKey.dispatchStationUid);
 		result.setDispatchTime(Dates.toXmlTime(routeKey.dispatchTime));
@@ -115,10 +122,11 @@ public class AvDriverService {
 		result.ticketId = it.getTicketId();
 		result.ticketSeries = it.getTicketSeries();
 		result.ticketNumber = it.getTicketNumber();
+		result.isGone = it.isIsGone();
 
 		if (it.getPassenger() != null) {
 			result.passenger = new Passenger();
-			com.artmark.avs5router.model.Passenger passenger = it.getPassenger();
+			com.artmark.avs5router.sale.model.Passenger passenger = it.getPassenger();
 
 			result.passenger.birthday = Dates.toDate(passenger.getBirthday());
 			result.passenger.citizenshipISO2 = passenger.getCitizenshipISO2();
@@ -139,5 +147,26 @@ public class AvDriverService {
 			result.agent.name = it.getAgent().getName();
 		}
 		return result;
+	}
+
+	public void updateTicket(UpdateTicketRequest request) {
+		dispatcherService.updateTicket(getRouteKey(request.routeKey), request.date, request.ticketId, request.isGone);
+	}
+
+	private static com.artmark.avs5router.dispatcher.model.RouteKey getRouteKey(RouteKey routeKey) {
+		com.artmark.avs5router.dispatcher.model.RouteKey result = new com.artmark.avs5router.dispatcher.model.RouteKey();
+		result.setDispatchStationUid(routeKey.dispatchStationUid);
+		result.setArrivalStationUid(routeKey.arrivalStationUid);
+		result.setDispatchTime(Dates.toXmlTime(routeKey.dispatchTime));
+		return result;
+	}
+
+	public List<Station> getStations() {
+		return globalStationRepository.findAll(new Sort("name")).stream().map(it -> {
+			Station station = new Station();
+			station.name = it.getName();
+			station.guid = it.getGuid();
+			return station;
+		}).collect(Collectors.toList());
 	}
 }

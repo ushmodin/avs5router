@@ -1,10 +1,13 @@
 package com.artmark.avs5router.avdriver;
 
+import com.artmark.avs5router.avdriver.model.Response;
 import com.artmark.avs5router.avdriver.model.TripInfoRequest;
 import com.artmark.avs5router.avdriver.model.TripInfoResponse;
+import com.artmark.avs5router.avdriver.model.UpdateTicketRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
@@ -22,19 +25,27 @@ public class AvDriverController {
 	private AvDriverService service;
 
 	@RequestMapping("/api/avdriver/tripInfo")
-	public TripInfoResponse tripInfo(@RequestBody TripInfoRequest request) {
-		return service.tripInfo(request);
+	public Response<?> tripInfo(@RequestBody TripInfoRequest request) {
+		return Response.success(service.tripInfo(request));
 	}
+
+	@RequestMapping("/api/avdriver/updateTicket")
+	public Response<?> updateTicket(@RequestBody UpdateTicketRequest request) {
+		service.updateTicket(request);
+		return Response.success(null);
+	}
+
+	@RequestMapping("/api/avdriver/stations")
+	public Response<?> getStations() {
+		return Response.success(service.getStations());
+	}
+
+
 
 	@ExceptionHandler
 	@ResponseBody
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-	public HashMap<?,?> exceptionHandler(Throwable e) {
-		HashMap<Object, Object> result = new HashMap<>();
-		HashMap<Object, Object> error = new HashMap<>();
-		error.put("message", "Ошибка сервиса");
-		error.put("details", e.getMessage());
-		result.put("error", error);
-		return result;
+	public Response<?> exceptionHandler(Throwable e) {
+		return Response.error("Ошибка сервиса", e.getMessage());
 	}
 }

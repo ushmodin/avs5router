@@ -18,5 +18,6 @@ public class TripInfoTicket {
 	public int seatNum;
 	public Agent agent;
 	public BigDecimal price;
+	public Boolean isGone;
 
 }
