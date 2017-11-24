@@ -5,6 +5,7 @@ import com.artmark.avs5router.avdriver.model.*;
 import com.artmark.avs5router.avdriver.model.Passenger;
 import com.artmark.avs5router.avdriver.model.RouteKey;
 import com.artmark.avs5router.dispatcher.DispatcherService;
+import com.artmark.avs5router.dispatcher.model.UpdateTicketResponse;
 import com.artmark.avs5router.domain.GlobalStationRepository;
 import com.artmark.avs5router.sale.model.*;
 import com.artmark.avs5router.sale.TransitService;
@@ -150,7 +151,10 @@ public class AvDriverService {
 	}
 
 	public void updateTicket(UpdateTicketRequest request) {
-		dispatcherService.updateTicket(getRouteKey(request.routeKey), request.date, request.ticketId, request.isGone);
+		UpdateTicketResponse response = dispatcherService.updateTicket(getRouteKey(request.routeKey), request.date, request.ticketId, request.isGone);
+		if (response.getError() != null) {
+			throw new RemoteException(response.getError().getCode(), response.getError().getMessage());
+		}
 	}
 
 	private static com.artmark.avs5router.dispatcher.model.RouteKey getRouteKey(RouteKey routeKey) {
