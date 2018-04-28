@@ -28,7 +28,7 @@ public class HostService {
 	public Host getHost(String dispatchStationUid, String arrivalStationUid, XMLGregorianCalendar dispatchTime) {
 		if ("1468886CD54D47A2869928363EB37A14".equals(dispatchStationUid)
 				&& "932a8a0d-19c0-4582-a5a0-687df4a2870d".equals(arrivalStationUid)
-				&& dispatchTime.getHour() == 15
+				&& dispatchTime.getHour() == 14
 				&& dispatchTime.getMinute() == 0) {
 			return hostRepository.getOne(5226291L);
 		}
